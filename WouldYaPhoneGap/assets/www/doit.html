@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Who Wouldya French</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<script type="text/javascript" charset="utf-8" src="js/cordova-2.4.0.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  
+  <script>
+  var _personOneId = 0;
+  var _personTwoId = 0;
+  var _combinationId = 0;
+  
+  $(document).ready(function(){
+	  //$(document).addEventListener("deviceready",onDeviceReady,false);
+	  $.ajaxSetup({ cache: false });
+	  
+	  //$("#getBtn").click(function(){
+		  $.getJSON('http://localhost:8080/WouldYaService/combination/random?callback=?', function(data){
+			  _combinationId = data.combinationId;
+			  $.getJSON('http://localhost:8080/WouldYaService/people/' + data.personTwoId + '?callback=?', function(data){
+				  displayPerson($("#divP2"), data);
+				  _personTwoId = data.personId;
+			  });
+			  $.getJSON('http://localhost:8080/WouldYaService/people/' + data.personOneId + '?callback=?', function(data){
+					displayPerson($("#divP1"), data);
+					_personOneId = data.personId;
+			  });
+
+			  localStorage.clickTime=addMinutes(new Date(), 30);
+			  localStorage.combinationId = _combinationId;
+		  });		  
+	  //});
+	  
+ 	  $("#choose1").click(function(){
+ 			postStats(JSON.stringify({ combinationId:_combinationId, personChosen:_personOneId, personNotChosen:_personTwoId }));		  
+ 	  });
+	  
+	  $("#choose2").click(function(){
+		  postStats(JSON.stringify({ combinationId:_combinationId, personChosen:_personTwoId, personNotChosen:_personOneId }));	
+ 	  });
+	  
+  });
+  
+  function postStats(combinationJson){
+	   // for chrome on linux execut the following command for cross domain 
+	   // /opt/google/chrome/google-chrome --enable-plugins --disable-web-security --allow-file-access-from-files
+	 $.ajax({
+	    url: 'http://localhost:8080/WouldYaService/result',
+	    contentType: 'application/json',
+	    crossDomain: true,
+	    method: 'POST',
+	    dataType: 'text',
+	    data: combinationJson,
+	    success: function(data) {
+	    	window.location.href = 'result.html';
+	   },
+	   error: function(data, statusCode) {
+	     alert("ERROR: "+data);
+	   }
+	});	
+  }
+  
+  function displayPerson(selector, data){
+	  var name = data.firstName + " " + data.lastName;
+	  selector.append('<img src="' + data.imageUrl + '" height="50" width="50"/>').append('<p>' + name + '</p>');
+  }
+  
+  function addMinutes(date, minutes) {
+	    return new Date(date.getTime() + minutes*1000);
+	}
+  </script>
+  
+ </head>
+ <body>
+
+   	<div class="container-fluid">
+		<div class="navbar ">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+					</a> <a class="brand" href="javascript:void(0);"
+						onclick="return false;">Navigation</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="active"><a href="javascript:void(0);"
+								onclick="return false;">Home</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+
+   
+		<div class="row-fluid">
+			<div class="span6 offset2">
+				<h1>Choose</h1>
+			</div>
+		</div>
+
+		<div class="row-fluid">
+			<div class="span4 offset2 hero-unit">
+<!-- 			<p> -->
+<!-- 				<button class="btn" id="getBtn">Click</button> -->
+<!-- 			</p> -->
+			<table class="table table-bordered">
+				<tr>
+					<td id='p1'>
+						<div id='divP1'></div>
+						<div><button id="choose1" class="btn btn-primary" >French Me</button></div>
+					</td>
+					<td id='p2'>
+						<div id='divP2'></div>
+						<div><button id="choose2" class="btn btn-primary">French Me</button></div>
+					</td>
+				</tr>
+			</table>
+
+			</div>
+		</div>
+   
+  </div>
+ </body>
+ 
+ <footer>
+	<p>Copyright DIJ LLC.</p>
+  </footer>
+</html>
+
+
+

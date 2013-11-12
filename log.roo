@@ -1,0 +1,14 @@
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-17 17:57:54
+project --topLevelPackage com.wouldya --projectName WouldYa --packaging POM
+module create --topLevelPackage com.wouldya.service --moduleName WouldYaService
+persistence setup --database POSTGRES --provider HIBERNATE 
+entity jpa --class ~.domain.Person
+field string --fieldName firstName
+field string --fieldName lastName
+field number --type java.lang.Integer --fieldName age
+field string --fieldName imageUrl
+json all
+web mvc json setup
+web mvc json all --package ~.controllers
+quit
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-17 17:58:40

@@ -1,0 +1,57 @@
+
+.title-box
+{
+	box-shadow: 10px 10px 5px #888888;
+	background-color:blue;
+} 
+
+.title-box h1 {
+   color:white;
+   text-align:center;
+}
+ 
+.title-box h2 {
+   color:white;
+}
+
+.title-box p {
+   color:white;
+}
+
+.article-box
+{
+	display: inline;
+	padding:10px 40px; 
+	width:300px;
+}
+
+.nav-box {
+	float:left;
+	display: inline;
+	border:2px solid #a1a1a1;
+	padding:10px 40px; 
+	background:#dddddd;
+	width:150px;
+	height:100%;
+	border-radius:25px;
+	-moz-border-radius:25px; /* Old Firefox */
+}
+
+.footer-box {
+	float:bottom;
+}
+
+input:required { 
+	background-color: lightyellow; 
+}
+
+input:required:invalid { 
+	background-color: lightyellow; 
+}
+
+canvas { 
+	border: 1px dashed black; 
+}
+
+
+
